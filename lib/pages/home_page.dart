@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shared_group3/model/user.dart';
 import 'package:shared_group3/service/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController famController = TextEditingController();
+
   TextEditingController ageController = TextEditingController();
 
   @override
@@ -32,6 +37,13 @@ class _HomePageState extends State<HomePage> {
                 height: 10,
               ),
               TextField(
+                controller: famController,
+                decoration: InputDecoration(hintText: "Familiya"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextField(
                 controller: ageController,
                 decoration: InputDecoration(hintText: "Yosh"),
               ),
@@ -40,13 +52,17 @@ class _HomePageState extends State<HomePage> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    String ism = nameController.text;
+                    // String ism = nameController.text;
+                    //
+                    // SharedPref.setName(ism);
+                    //
+                    // int yosh = int.parse(ageController.text);
+                    //
+                    // SharedPref.setAge(yosh);
 
-                    SharedPref.setName(ism);
+                    User user = User(name: nameController.text, fam: famController.text, age: int.parse(ageController.text));
+                      SharedPref.setUser(user);
 
-                    int yosh = int.parse(ageController.text);
-
-                    SharedPref.setAge(yosh);
                   },
                   child: Text("DB ga saqlash")),
               SizedBox(
@@ -54,8 +70,12 @@ class _HomePageState extends State<HomePage> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    print(await SharedPref.getName());
-                    print(await SharedPref.getAge());
+                    // print(await SharedPref.getName());
+                    // print(await SharedPref.getAge());
+
+                  User user = await SharedPref.getUser();
+                    print(user.name);
+
                   },
                   child: Text("DB dan olish")),
             ],
